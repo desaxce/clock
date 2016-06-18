@@ -6,7 +6,7 @@ Rectangle {
 	color: "lightgray"
 
 
-	Time { cellColor: "red"; anchors.top: page.top}
+	Time { cellColor: "gray"; anchors.top: page.top; rotation: 180}
 
 	Time { cellColor: "gray"; anchors.bottom: page.bottom}
 }
