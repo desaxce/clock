@@ -3,6 +3,7 @@ import QtQuick 2.0
 Item {
 	id: container
 	property alias cellColor: rectangle.color
+	property alias startTime: updater.startTime
 	width:320; height: 200
 	signal clicked()
 	property var timeLeft: 20000
@@ -14,12 +15,15 @@ Item {
 		anchors.fill: parent
 	}
 
-	// TODO: add 0's at the begining of numbers
+	// Adds 0's at the begining of numbers
+	function pad(num) {
+		return ('00' + num).substr(-2);
+	}
+
 	function computeText(t) {
 		var minutes = Math.floor(t/60)
 		var seconds = Math.floor(t%60)
-		seconds = (seconds >= 0) ? seconds: seconds + 60
-		return minutes.toString() + ":" + seconds.toString()
+		return pad(minutes) + ":" + pad(seconds)
 	}
 
 	Text {
@@ -48,13 +52,9 @@ Item {
 	}
 
 	function tryClick() {
-		if (container.running == false) {
-			updater.startTime = new Date().getTime()
-			container.running = true
+		if (container.running == true) {
 			container.clicked()
-		} else {
-			container.running = false
-		}
+		} 
 	}
 
 	MouseArea {
