@@ -51,14 +51,8 @@ Item {
 		}
 	}
 
-	function tryClick() {
-		if (container.running == true) {
-			container.clicked()
-		} 
-	}
-
 	MouseArea {
 		anchors.fill: parent
-		onClicked: tryClick()
+		onClicked: container.clicked()
 	}
 }

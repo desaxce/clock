@@ -4,39 +4,42 @@ Rectangle {
 	id: page
 	width: 320; height: 480
 	color: "lightgray"
+	property var onColor: "orange"
+	property var offColor: "gray"
 
-
+	// TODO: create only one method called switchClocks
 	function startTwo() {
-		if (player1.running = true) {
+		if (player2.running == false) {
 			player1.running = false
+			player1.cellColor = offColor
 			player2.startTime = new Date().getTime()
 			player2.running = true
+			player2.cellColor = onColor
 		}
 	}
 
 	function startOne() {
-		if (player2.running = true) {
+		if (player1.running == false) {
 			player2.running = false
+			player2.cellColor = offColor
 			player1.startTime = new Date().getTime()
 			player1.running = true
+			player1.cellColor = onColor
 		}
 	}
 
 	Time { 
 		id: player1
-		cellColor: "gray"
+		cellColor: offColor
 		anchors.top: page.top
 		rotation: 180
-		running: false
 		onClicked: startTwo()
 	}
 
 	Time {
 		id: player2
-		cellColor: "gray"
+		cellColor: offColor
 		anchors.bottom: page.bottom
-		running: true
-		startTime: new Date().getTime()
 		onClicked: startOne()
 	}
 }
