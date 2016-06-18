@@ -7,7 +7,7 @@ Rectangle {
 	property var onColor: "#FF8C00"
 	property var onPressedColor: "#FF6900"
 	property var offColor: "#656565"
-	property var onTextColor: "#CCCCCC"
+	property var onTextColor: "#FFFFFF"
 	property var offTextColor: "black"
 
 	// TODO: create only one method called switchClocks
@@ -35,10 +35,6 @@ Rectangle {
 		}
 	}
 
-	function pause() {
-		player1.running = false
-		player2.running = true
-	}
 
 	Time { 
 		id: player1
@@ -69,5 +65,54 @@ Rectangle {
 		}
 		onReleased: startOne()
 		onPressed: cellColor = onPressedColor
+	}
+
+	function pauseClocks() {
+		player1.running = false
+		player2.running = false
+
+		player2.cellColor = offColor
+		player2.textColor = offTextColor
+
+		player1.cellColor = offColor
+		player1.textColor = offTextColor
+	}
+
+	Rectangle {
+		id: pause
+		color: page.color
+		height: page.height/10
+		width: height
+		anchors {
+			horizontalCenter: page.horizontalCenter
+			verticalCenter: page.verticalCenter
+		}
+		
+		Rectangle {
+			id: leftBar
+			color: offColor
+			width: pause.width/3
+			height: pause.height
+			smooth: true
+			radius: 1
+			anchors.left: pause.left
+			anchors.leftMargin: pause.width/12
+		}
+
+		Rectangle {
+			id: rightBar
+			color: offColor
+			width: pause.width/3
+			height: pause.height
+			smooth: true
+			radius: 1
+			anchors.right: pause.right
+			anchors.rightMargin: pause.width/12
+		}
+
+		MouseArea {
+			anchors.fill: parent
+			onClicked: pauseClocks()
+		}
 	}
 }
