@@ -5,6 +5,7 @@ Item {
 	property alias cellColor: rectangle.color
 	property alias textColor: timeDisplay.color
 	property alias startTime: updater.startTime
+	property alias cellText: timeDisplay.text
 	property var timeLeft: 20000
 	property bool running: false
 
@@ -35,11 +36,11 @@ Item {
 		id: timeDisplay
 		text: computeText(container.timeLeft/1000)
 		color: "black"
-		//y: 30
 		anchors {
 			horizontalCenter: container.horizontalCenter
 			verticalCenter: container.verticalCenter
 		}
+		// TODO: adapt font size to container
 		font.pointSize: 82; font.bold: false
 	}
 	

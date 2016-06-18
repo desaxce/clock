@@ -9,6 +9,7 @@ Rectangle {
 	property var offColor: "#656565"
 	property var onTextColor: "#FFFFFF"
 	property var offTextColor: "black"
+	property var clockStart: 20000
 
 	// TODO: create only one method called switchClocks
 	function startTwo() {
@@ -34,7 +35,25 @@ Rectangle {
 			player1.textColor = onTextColor
 		}
 	}
+	
+	function pauseClocks() {
+		player1.running = false
+		player2.running = false
 
+		player2.cellColor = offColor
+		player2.textColor = offTextColor
+
+		player1.cellColor = offColor
+		player1.textColor = offTextColor
+	}
+
+	function resetClocks() {
+		pauseClocks()
+		player1.timeLeft = clockStart
+		player1.timeLeft = clockStart
+		player1.cellText = player1.computeText(clockStart/1000)
+		player2.cellText = player2.computeText(clockStart/1000)
+	}
 
 	Time { 
 		id: player1
@@ -65,17 +84,6 @@ Rectangle {
 		}
 		onReleased: startOne()
 		onPressed: cellColor = onPressedColor
-	}
-
-	function pauseClocks() {
-		player1.running = false
-		player2.running = false
-
-		player2.cellColor = offColor
-		player2.textColor = offTextColor
-
-		player1.cellColor = offColor
-		player1.textColor = offTextColor
 	}
 
 	Rectangle {
@@ -113,6 +121,36 @@ Rectangle {
 		MouseArea {
 			anchors.fill: parent
 			onClicked: pauseClocks()
+		}
+	}
+
+	Rectangle {
+		id: reset
+		color: "white"
+		
+		height: page.height/10
+		width: height
+		
+		// TODO: remove at the end	
+		smooth: true
+		radius: 2
+		Text {
+			text: "Reset"
+			font.pointSize: 13
+			anchors {
+				verticalCenter: reset.verticalCenter
+				horizontalCenter: reset.horizontalCenter
+			}
+		}
+		anchors {
+			verticalCenter: page.verticalCenter
+			rightMargin: player1.anchors.rightMargin
+			right: page.right
+		}
+
+		MouseArea {
+			anchors.fill: parent
+			onClicked: resetClocks()
 		}
 	}
 }
