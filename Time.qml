@@ -3,15 +3,20 @@ import QtQuick 2.0
 Item {
 	id: container
 	property alias cellColor: rectangle.color
+	property alias textColor: timeDisplay.color
 	property alias startTime: updater.startTime
-	width:320; height: 200
-	signal clicked()
 	property var timeLeft: 20000
 	property bool running: false
+
+	width: parent.width - 20; height: 3*parent.height/8
+	signal released()
+	signal pressed()
 	
 	Rectangle {
 		id: rectangle
-		border.color: "white"
+		smooth: true
+		radius: 4
+		//border.color: "white"
 		anchors.fill: parent
 	}
 
@@ -25,19 +30,22 @@ Item {
 		var seconds = Math.floor(t%60)
 		return pad(minutes) + ":" + pad(seconds)
 	}
-
+	
 	Text {
 		id: timeDisplay
 		text: computeText(container.timeLeft/1000)
-		y: 30
-		anchors.horizontalCenter: container.horizontalCenter
-		anchors.verticalCenter: container.verticalCenter
-		font.pointSize: 60; font.bold: true
+		color: "black"
+		//y: 30
+		anchors {
+			horizontalCenter: container.horizontalCenter
+			verticalCenter: container.verticalCenter
+		}
+		font.pointSize: 82; font.bold: false
 	}
 	
 	Timer {
 		id: updater
-		interval: 100
+		interval: 10
 		repeat: true
 		running: container.running
 		triggeredOnStart: false
@@ -51,8 +59,15 @@ Item {
 		}
 	}
 
+	function tryPressed() {
+		if (container.running == true) {
+			container.pressed()
+		}
+	}
+
 	MouseArea {
 		anchors.fill: parent
-		onClicked: container.clicked()
+		onReleased: container.released()
+		onPressed: tryPressed()
 	}
 }
