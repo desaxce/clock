@@ -6,7 +6,7 @@ Item {
 	property alias textColor: timeDisplay.color
 	property alias startTime: updater.startTime
 	property alias cellText: timeDisplay.text
-	property var timeLeft: 20000
+	property var timeLeft: 5000
 	property bool running: false
 
 	width: parent.width - 20; height: 3*parent.height/8
@@ -28,7 +28,7 @@ Item {
 
 	function computeText(t) {
 		var minutes = Math.floor(t/60)
-		var seconds = Math.floor(t%60)
+		var seconds = Math.ceil(t%60) // ceil smoother than floor
 		return pad(minutes) + ":" + pad(seconds)
 	}
 	
@@ -56,7 +56,13 @@ Item {
 			endTime = new Date().getTime()
 			container.timeLeft += startTime - endTime
 			startTime = endTime
-			timeDisplay.text = computeText(container.timeLeft/1000)
+			if (container.timeLeft > 0) {
+				timeDisplay.text = computeText(container.timeLeft/1000)
+			} else {
+				timeDisplay.text = computeText(0)
+				container.cellColor = "red"
+				container.running = false
+			}
 		}
 	}
 

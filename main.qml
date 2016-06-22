@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import QtQuick.Controls 1.2
 
 Rectangle {
 	id: page
@@ -19,6 +20,7 @@ Rectangle {
 			player1.textColor = offTextColor
 			player2.startTime = new Date().getTime()
 			player2.running = true
+			pause.visible= true
 			player2.cellColor = onColor
 			player2.textColor = onTextColor
 		}
@@ -31,6 +33,7 @@ Rectangle {
 			player2.textColor = offTextColor
 			player1.startTime = new Date().getTime()
 			player1.running = true
+			pause.visible = true
 			player1.cellColor = onColor
 			player1.textColor = onTextColor
 		}
@@ -39,7 +42,7 @@ Rectangle {
 	function pauseClocks() {
 		player1.running = false
 		player2.running = false
-
+		pause.visible = false
 		player2.cellColor = offColor
 		player2.textColor = offTextColor
 
@@ -50,7 +53,7 @@ Rectangle {
 	function resetClocks() {
 		pauseClocks()
 		player1.timeLeft = clockStart
-		player1.timeLeft = clockStart
+		player2.timeLeft = clockStart
 		player1.cellText = player1.computeText(clockStart/1000)
 		player2.cellText = player2.computeText(clockStart/1000)
 	}
@@ -91,6 +94,7 @@ Rectangle {
 		color: page.color
 		height: page.height/10
 		width: height
+		visible: false
 		anchors {
 			horizontalCenter: page.horizontalCenter
 			verticalCenter: page.verticalCenter
@@ -124,10 +128,20 @@ Rectangle {
 		}
 	}
 
-	Rectangle {
+	Reset {
 		id: reset
+		color: page.color
+		darkgrey: page.color
+		lightgrey: page.offColor
+		height: page.height/10
+		width: height
+	}
+
+	Rectangle {
+		id: settings
 		color: "white"
-		
+	
+		signal clicked()
 		height: page.height/10
 		width: height
 		
@@ -135,22 +149,26 @@ Rectangle {
 		smooth: true
 		radius: 2
 		Text {
-			text: "Reset"
-			font.pointSize: 13
+			text: "Sett."
+			font.pointSize: 11
 			anchors {
-				verticalCenter: reset.verticalCenter
-				horizontalCenter: reset.horizontalCenter
+				verticalCenter: settings.verticalCenter
+				horizontalCenter: settings.horizontalCenter
 			}
 		}
 		anchors {
 			verticalCenter: page.verticalCenter
-			rightMargin: player1.anchors.rightMargin
-			right: page.right
+			leftMargin: player1.anchors.leftMargin
+			left: page.left
 		}
 
 		MouseArea {
 			anchors.fill: parent
-			onClicked: resetClocks()
+			onClicked: {
+				var component = Qt.createComponent("Settings.qml")
+				var window = component.createObject(page)
+				window.show()
+			}
 		}
 	}
 }
