@@ -2,8 +2,6 @@ import QtQuick 2.0
 
 Rectangle {
 	id: reset
-	// TODO:to remove once design finished
-	color: "white"
 
 	property var darkgrey
 	property var lightgrey
@@ -11,6 +9,25 @@ Rectangle {
 	property var thickness: 15
 	
 	Rectangle {
+		id: triangle
+		width: reset.thickness
+		height: reset.thickness
+		smooth: true
+		//radius: 2
+		color: lightgrey
+	}
+
+	Rectangle {
+		width: triangle.width
+		height: triangle.height
+		rotation: 45
+		smooth: true
+		color: "white"
+		x: triangle.x-triangle.width
+		y: triangle.y-triangle.height
+	}
+
+	/*Rectangle {
 		id: outerCircle
 		width: reset.width
 		height: reset.height
@@ -34,29 +51,18 @@ Rectangle {
 			smooth: true
 			radius: width*0.5
 		}
-	}
+	}/*
 
 	// Gum to remove part of the circles
-	Rectangle {
+	/*Rectangle {
 		id: gomme
 		color: darkgrey
 		width: triangle.width
 		height: triangle.height/2
 		x: triangle.x
 		y: triangle.y + triangle.height
-	}
+	}*/
 	
-	Triangle {
-		id: triangle
-		width: reset.thickness
-		height: reset.thickness
-		color: lightgrey
-		rotation: 45
-
-		x: reset.width-triangle.width + 5*reset.thickness/21
-		y: reset.height/2-triangle.height
-	}
-
 
 	anchors {
 		verticalCenter: page.verticalCenter
