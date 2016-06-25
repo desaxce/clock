@@ -1,12 +1,13 @@
 import QtQuick 2.0
 import Ubuntu.Components 0.1
-import QtQuick.Dialogs 1.2
+import QtQuick.Window 2.2
 
-Rectangle {
+Window {
 	id: settings
-	width: 320
-	height: 480
+	width: parent.width
+	height: parent.height
 	color: "white"
+	visible: false
 
 	ListModel {
 		id: clockModel
@@ -64,27 +65,12 @@ Rectangle {
 		}
 	}
 
-	Dialog {
-		id: editor
-		title: "Clock Editor"
-		standardButtons: StandardButton.Ok | StandardButton.Cancel
-		
-		TextField {
-			anchors.top: editor.top
-			id: clockStartTime
-			text: "Start time"
-			validator: IntValidator{}
-		}
-
-		TextField {
-			anchors.top: clockStartTime.bottom
-			id: clockName
-			text: "Clock name"
-		}
-
-		onAccepted: {
-			console.log(clockName.text + "\t" + clockStartTime.text);
-			clockModel.append({name: clockName.text, startTime: clockStartTime.text});
+	Editor {	
+		id: clockEditor
+		visible: false
+		onAddClicked: {
+			clockModel.append({name: name, startTime: timer})
+			clockEditor.visible = false
 		}
 	}
 
@@ -93,12 +79,27 @@ Rectangle {
 		text: "+"
 		font.pixelSize: 36
 		anchors.top: settings.top
+		anchors.left: settings.left
 
 		MouseArea {
 			anchors.fill: parent
 			onClicked: {
-				editor.open()
+				clockEditor.visible = true
 			}
+
+		}
+	}
+
+	Text {
+		id: goBackButton
+		text: "<"
+		font.pixelSize: 36
+		anchors.top: settings.top
+		anchors.left: addButton.right
+
+		MouseArea {
+			anchors.fill: parent
+			onClicked: settings.visible = false
 		}
 	}
 }

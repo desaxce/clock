@@ -1,5 +1,5 @@
 import QtQuick 2.0
-import QtQuick.Controls 1.2
+//import QtQuick.Controls 1.2
 
 Rectangle {
 	id: page
@@ -11,6 +11,10 @@ Rectangle {
 	property var onTextColor: "#FFFFFF"
 	property var offTextColor: "black"
 	property var clockStart: 20000
+	Settings {
+		id: settings
+		visible: false
+	}
 
 	// TODO: create only one method called switchClocks
 	function startTwo() {
@@ -138,7 +142,7 @@ Rectangle {
 	}
 
 	Rectangle {
-		id: settings
+		id: settingsButton
 		color: "white"
 	
 		signal clicked()
@@ -152,8 +156,8 @@ Rectangle {
 			text: "Sett."
 			font.pointSize: 11
 			anchors {
-				verticalCenter: settings.verticalCenter
-				horizontalCenter: settings.horizontalCenter
+				verticalCenter: settingsButton.verticalCenter
+				horizontalCenter: settingsButton.horizontalCenter
 			}
 		}
 		anchors {
@@ -165,9 +169,8 @@ Rectangle {
 		MouseArea {
 			anchors.fill: parent
 			onClicked: {
-				var component = Qt.createComponent("Settings.qml")
-				var window = component.createObject(page)
-				window.show()
+				pauseClocks()
+				settings.visible = true
 			}
 		}
 	}
